@@ -22,8 +22,8 @@ WORKDIR /app
 # Copy your source code
 COPY . .
 
-# Example: build a CUDA/C++ project (replace with your own build)
-RUN g++ -std=c++17 -O2 -o main main.cpp
+# Example: build a CUDA project (change main.cu to your file)
+RUN nvcc -std=c++17 -O2 -o main main.cu
 
 # Default command (runs your compiled program)
 CMD ["./main"]
