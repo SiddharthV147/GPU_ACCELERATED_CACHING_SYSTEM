@@ -1,30 +1,29 @@
-# Use official NVIDIA CUDA image (Ubuntu 22.04 base)
-FROM nvidia/cuda:12.6.3-devel-ubuntu22.04
+# Use NVIDIA CUDA Runtime with Ubuntu 22.04 base
+FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04
 
-# Prevent interactive prompts
+# Avoid interactive prompts during apt installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update and install tools + GCC 12 + Python
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc-12 g++-12 \
-    cmake git wget curl \
-    python3 python3-pip python3-venv \
-    && rm -rf /var/lib/apt/lists/*
+# Update and install essential packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        python3 \
+        python3-pip \
+        ca-certificates \
+        wget \
+        git \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set GCC-12 as default
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 \
- && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+# Optional: create a non-root user for better security
+# RUN useradd -m -u 1000 devuser && chown -R devuser:devuser /workspace
+# USER devuser
 
-# Working directory
-WORKDIR /app
+# Set working directory
+WORKDIR /workspace
 
-# Copy your source code
-COPY . .
+COPY ./ /workspace/
 
-# Build CUDA project using nvcc
-RUN nvcc -std=c++17 -O2 -o main src/main.cu
-
-# Default command (runs your compiled program)
-CMD ["./main"]
+# Default to bash shell
+CMD ["/bin/bash"]
 

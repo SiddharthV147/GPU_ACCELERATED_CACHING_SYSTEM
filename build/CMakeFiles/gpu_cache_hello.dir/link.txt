@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/gpu_cache_hello.dir/link.d CMakeFiles/gpu_cache_hello.dir/src/main.cpp.o -o gpu_cache_hello

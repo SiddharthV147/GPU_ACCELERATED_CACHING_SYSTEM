@@ -1,1 +1,3 @@
-# GPU_ACCELERATED_CACHING_SYSTEM
+## GPU ACCELERATED CACHING SYSTEM
+
+#Command to run : docker run -it --gpus all ubuntu-gcc12-cuda 
